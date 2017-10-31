@@ -1,6 +1,16 @@
 #include <iostream>
 #include <string>
 
+void swap(char* s, int a, int b)
+{
+	int length = strlen(s);
+	if(s != nullptr && a > 0 && b > 0 && a < length-1 && b < length-1)
+	{
+		char tmp = s[a];
+		s[a] = s[b];
+		s[b] = tmp;
+	}
+}
 
 void ReverseString(char* s, int from, int to)
 {
@@ -83,29 +93,58 @@ void LongestCommonSubsequence(char* s1, char* s2)
 		}
 		std::cout << std::endl;
 	}
-	int i = length_s1 + 1;
-	int j = length_s2 + 1;
+	int i = length_s1;
+	int j = length_s2;
 	int lengthOfLCS = r[i][j];
-	char LCS[lengthOfLCS];
-	char *p_LCS = &LCS[0];
+	char LCS[lengthOfLCS+1];
+	LCS[lengthOfLCS] = '\0';
+	int k = lengthOfLCS - 1;
 	while(i != 0 && j != 0)
 	{
 		if(r[i][j] > r[i-1][j] && r[i][j] > r[i][j-1])
 		{
-			*p_LCS = s1[i];
+			LCS[k] = s2[j-1];
 			i--;
 			j--;
-			p_LCS++;
+			k--;
+		}
+		else if(r[i-1][j] > r[i][j-1])
+		{
+			i--;
 		}
 		else
-		{
 			j--;
-		}
 	}
-	ReverseString(LCS, 0, lengthOfLCS - 1);
 	std::cout << "The Longest Common Subsequence is:" << std::endl;
 	std::cout << LCS << std::endl;
 
+}
+
+void Permutation(char* s, int start)
+{
+	using namespace std;
+	//print all permutations of a string.
+	int length = strlen(s);
+	if(s == nullptr || start < 0)
+	{
+		return;
+	}
+	if(length - start == 1)
+	{
+		cout << s << endl;
+		return;
+	}
+	for(int i = start; i < length; i++)
+	{
+		swap(s[i], s[start]);
+		Permutation(s, start+1);
+		swap(s[i], s[start]); 
+	}
+}
+
+void Permutation_iterative(int* s)
+{
+	 
 }
 int main()
 {
@@ -116,7 +155,9 @@ int main()
 	char sent[] = "Fuck you leather man!";
 	ReverseSentence(sent);
 	cout << sent << endl;
-	char s1[] = "ABCBDAB";
-	char s2[] = "BDCABA";
+	char s1[] = "Fuck you leather man!";
+	char s2[] = "Me fuck leather mann.";
 	LongestCommonSubsequence(s1, s2);
+	char s3[] = "ABCDEFGHIJK";
+	Permutation(s3, 0);
 }
